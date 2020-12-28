@@ -2,12 +2,12 @@ import kotlinx.browser.document
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 
-class Renderer(val w: Int, val h: Int) {
+class Renderer(val viewportWidth: Int, val viewportHeight: Int) {
 
   private val canvas = (document.createElement("canvas") as HTMLCanvasElement)
     .apply {
-      width = w
-      height = h
+      width = viewportWidth
+      height = viewportHeight
     }
   private val context = canvas.getContext("2d") as CanvasRenderingContext2D
 
@@ -25,7 +25,7 @@ class Renderer(val w: Int, val h: Int) {
   }
 
   fun clear() {
-    context.clearRect(0.0, 0.0, w.toDouble(), h.toDouble())
+    context.clearRect(0.0, 0.0, viewportWidth.toDouble(), viewportHeight.toDouble())
   }
 
 }
