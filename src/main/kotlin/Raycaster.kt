@@ -9,7 +9,7 @@ class Raycaster(private val stepPrecision: Int = 32) {
     val viewportHeight = renderer.viewportHeight
     val viewportHeightHalf = viewportHeight / 2
 
-    var raySweepAngle = camera.rotation - camera.halfFov
+    var raySweepAngle = camera.rotation - (camera.fov / 2)
 
     for (rayIndex in 0 until viewportWidth) {
 
@@ -17,8 +17,8 @@ class Raycaster(private val stepPrecision: Int = 32) {
       var rayY = camera.yPos
 
       do {
-        rayX += kotlin.math.cos(toRadians(raySweepAngle)) / stepPrecision
-        rayY += kotlin.math.sin(toRadians(raySweepAngle)) / stepPrecision
+        rayX += raySweepAngle.cosine() / stepPrecision
+        rayY += raySweepAngle.sine() / stepPrecision
         // TODO bounds checking
         val wallHit = map.data[kotlin.math.floor(rayY).toInt()][kotlin.math.floor(rayX).toInt()] > 0
       } while (!wallHit)

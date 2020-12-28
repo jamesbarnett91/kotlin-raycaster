@@ -1,19 +1,8 @@
-import kotlinx.browser.document
-
-private const val MOVE_SPEED = 0.5
-private const val ROTATE_SPEED = 5
-
-data class RaycastContext(
-  val renderer: Renderer,
-  val camera: Camera,
-  val map: Map,
-  val minimap: Minimap
-)
-
 fun main() {
-  val renderer = Renderer(640, 480)
+  val raycaster = Raycaster()
+  val renderer = Renderer(viewportWidth = 640, viewportHeight = 480)
   val camera = Camera(
-    fov = 60,
+    fov = 90,
     xPos = 2.0,
     yPos = 2.0,
     rotation = 90.0
@@ -23,37 +12,11 @@ fun main() {
 
   val context = RaycastContext(renderer, camera, map, minimap)
 
-  val raycaster = Raycaster()
-
-  document.onkeydown = {
-    when (it.code) {
-      "KeyW" -> {
-        console.log("key w")
-        val cameraCos = kotlin.math.cos(toRadians(camera.rotation)) * MOVE_SPEED
-        val cameraSin = kotlin.math.sin(toRadians(camera.rotation)) * MOVE_SPEED
-        camera.xPos += cameraCos
-        camera.yPos += cameraSin
-      }
-      "KeyS" -> {
-        console.log("key s")
-        val cameraCos = kotlin.math.cos(toRadians(camera.rotation)) * MOVE_SPEED
-        val cameraSin = kotlin.math.sin(toRadians(camera.rotation)) * MOVE_SPEED
-        camera.xPos -= cameraCos
-        camera.yPos -= cameraSin
-      }
-      "KeyA" -> {
-        console.log("key a")
-        camera.rotation -= ROTATE_SPEED
-      }
-      "KeyD" -> {
-        console.log("key d")
-        camera.rotation += ROTATE_SPEED
-      }
-    }
+  CameraController(camera, moveSpeed = 0.5, rotateSpeed = 5) {
     paint(raycaster, context)
-    console.log("camera x:${camera.xPos} y:${camera.yPos} r: ${camera.rotation}")
   }
 
+  // Do an initial paint and wait for input
   paint(raycaster, context)
 }
 

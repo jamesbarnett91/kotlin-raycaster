@@ -9,6 +9,7 @@ class Renderer(val viewportWidth: Int, val viewportHeight: Int) {
       width = viewportWidth
       height = viewportHeight
     }
+
   private val context = canvas.getContext("2d") as CanvasRenderingContext2D
 
   init {
