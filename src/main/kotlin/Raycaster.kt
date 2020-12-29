@@ -1,9 +1,11 @@
+import kotlin.js.Date
 import kotlin.math.pow
 
-class Raycaster(private val stepPrecision: Int = 32) {
+class Raycaster(private val stepPrecision: Int) {
 
   fun raycast(raycastContext: RaycastContext) {
-    val (renderer, camera, map, _) = raycastContext
+    val raycastStartMs = Date().getTime()
+    val (renderer, textureManager, camera, map, _) = raycastContext
 
     val viewportWidth = renderer.viewportWidth
     val viewportHeight = renderer.viewportHeight
@@ -15,28 +17,44 @@ class Raycaster(private val stepPrecision: Int = 32) {
 
       var rayX = camera.xPos
       var rayY = camera.yPos
+      var objectTypeHit: Int
 
       do {
         rayX += raySweepAngle.cosine() / stepPrecision
         rayY += raySweepAngle.sine() / stepPrecision
+
         // TODO bounds checking
-        val wallHit = map.data[kotlin.math.floor(rayY).toInt()][kotlin.math.floor(rayX).toInt()] > 0
-      } while (!wallHit)
+        objectTypeHit = map.data[rayY.toFlooredInt()][rayX.toFlooredInt()]
+      } while (objectTypeHit == 0)
+
+      val texture = textureManager.getTexture(objectTypeHit)
+      val textureXIndex = ((texture.width * (rayX + rayY)) % texture.width).toFlooredInt()
 
       val distanceToWall = kotlin.math.sqrt((camera.xPos - rayX).pow(2) + (camera.yPos - rayY).pow(2))
-      val wallHeight = kotlin.math.floor(viewportHeightHalf / distanceToWall).toInt()
+      val wallHeight = viewportHeightHalf / distanceToWall
 
-      // Sky
-      renderer.drawLine(rayIndex, 0, rayIndex, viewportHeightHalf - wallHeight, "cyan")
+      // Ceiling
+      renderer.drawLine(rayIndex, 0.0, rayIndex, viewportHeightHalf - wallHeight, "#505050")
       // Wall
-      renderer.drawLine(rayIndex, viewportHeightHalf - wallHeight, rayIndex, viewportHeightHalf + wallHeight, "red")
+      drawWallTexture(rayIndex, wallHeight, textureXIndex, texture, renderer)
       // Floor
-      renderer.drawLine(rayIndex, viewportHeightHalf + wallHeight, rayIndex, viewportHeight, "green")
+      renderer.drawLine(rayIndex, viewportHeightHalf + wallHeight, rayIndex, viewportHeight, "#A9A9A9")
 
       raySweepAngle += (camera.fov / viewportWidth.toDouble())
     }
+
+    console.log("Viewport raycast in ${Date().getTime() - raycastStartMs}ms")
   }
 
+  private fun drawWallTexture(rayIndex: Int, wallHeight: Double, textureXIndex: Int, texture: Texture, renderer: Renderer) {
+    val yIncrement = (wallHeight * 2) / texture.height
+    var y = (renderer.viewportHeight/2) - wallHeight
 
+    for (i in 0 until texture.height) {
+      // Extend y length by 0.1 to overlap strips slightly to avoid screen-door like effect
+      renderer.drawLine(rayIndex, y, rayIndex, y + yIncrement + 0.1, texture.cssColourPixelList[textureXIndex + i * texture.width])
+      y += yIncrement
+    }
+  }
 
 }

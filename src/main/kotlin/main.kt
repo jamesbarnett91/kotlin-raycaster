@@ -1,6 +1,7 @@
 fun main() {
-  val raycaster = Raycaster()
-  val renderer = Renderer(viewportWidth = 640, viewportHeight = 480)
+  val renderer = Renderer(viewportWidth = 320, viewportHeight = 240, outputScale = 3)
+  val textureManager = TextureManager()
+    .apply { loadTextures() }
   val camera = Camera(
     fov = 90,
     xPos = 2.0,
@@ -10,7 +11,9 @@ fun main() {
   val map = Map()
   val minimap = Minimap(map)
 
-  val context = RaycastContext(renderer, camera, map, minimap)
+  val context = RaycastContext(renderer, textureManager, camera, map, minimap)
+
+  val raycaster = Raycaster(stepPrecision = 32)
 
   CameraController(camera, moveSpeed = 0.5, rotateSpeed = 5) {
     paint(raycaster, context)
@@ -21,9 +24,11 @@ fun main() {
 }
 
 fun paint(raycaster: Raycaster, raycastContext: RaycastContext) {
-  raycastContext.renderer.clear()
-  raycaster.raycast(raycastContext)
-  raycastContext.minimap.update(raycastContext.camera)
+  with(raycastContext) {
+    renderer.clear()
+    raycaster.raycast(this)
+    minimap.update(camera)
+  }
 }
 
 fun toRadians(degrees: Double): Double {

@@ -5,3 +5,7 @@ fun Double.sine(): Double {
 fun Double.cosine(): Double {
   return kotlin.math.cos(toRadians(this))
 }
+
+fun Double.toFlooredInt(): Int {
+  return kotlin.math.floor(this).toInt()
+}
