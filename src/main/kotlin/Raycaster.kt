@@ -30,7 +30,8 @@ class Raycaster(private val stepPrecision: Int) {
       val texture = textureManager.getTexture(objectTypeHit)
       val textureXIndex = ((texture.width * (rayX + rayY)) % texture.width).toFlooredInt()
 
-      val distanceToWall = kotlin.math.sqrt((camera.xPos - rayX).pow(2) + (camera.yPos - rayY).pow(2))
+      var distanceToWall = kotlin.math.sqrt((camera.xPos - rayX).pow(2) + (camera.yPos - rayY).pow(2))
+//      distanceToWall *= (raySweepAngle-camera.rotation).cosine()
       val wallHeight = viewportHeightHalf / distanceToWall
 
       // Ceiling

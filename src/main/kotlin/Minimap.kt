@@ -3,15 +3,13 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 
 class Minimap(private val map: Map) {
-  private val scale = 30
+  private val scale = 20
 
   private val canvas = (document.createElement("canvas") as HTMLCanvasElement)
     .apply {
       width = map.width * scale
       height = map.height * scale
       id = "minimap"
-      style.width = "${width}px"
-      style.height = "${height}px"
     }
   private val context = canvas.getContext("2d") as CanvasRenderingContext2D
 
@@ -21,7 +19,7 @@ class Minimap(private val map: Map) {
 
   private fun drawMap() {
     for (y in 0 until map.height) {
-      for (x in 0 until map.height) {
+      for (x in 0 until map.width) {
         val wall = map.data[y][x]
         if (wall > 0) {
           context.fillStyle = "#000000"
@@ -35,15 +33,15 @@ class Minimap(private val map: Map) {
     context.clearRect(0.0, 0.0, (map.width * scale).toDouble(), (map.height * scale).toDouble())
     drawMap()
     context.fillStyle = "#FF0000"
-    context.fillRect(camera.xPos * scale, camera.yPos * scale, scale.toDouble(), scale.toDouble())
+    context.fillRect((camera.xPos * scale)-5, (camera.yPos * scale)-5, 10.0, 10.0)
 
     context.strokeStyle = "#00FF00"
     context.lineWidth = 2.0
     context.beginPath()
     context.moveTo(camera.xPos * scale, camera.yPos * scale)
 
-    val cameraCos = kotlin.math.cos(toRadians(camera.rotation)) * 4
-    val cameraSin = kotlin.math.sin(toRadians(camera.rotation)) * 4
+    val cameraCos = kotlin.math.cos(toRadians(camera.rotation))
+    val cameraSin = kotlin.math.sin(toRadians(camera.rotation))
 
     val dirX = camera.xPos + cameraCos
     val dirY = camera.yPos + cameraSin

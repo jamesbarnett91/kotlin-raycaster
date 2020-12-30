@@ -2,8 +2,8 @@ import kotlinx.browser.document
 
 class CameraController(
   private val camera: Camera,
-  private val moveSpeed: Double = 0.5,
-  private val rotateSpeed: Int = 5,
+  private val moveSpeed: Double,
+  private val rotateSpeed: Int,
   private val afterInput: () -> Unit
 ) {
 
@@ -19,6 +19,7 @@ class CameraController(
       "KeyD" -> rotateClockwise()
     }
     afterInput()
+    console.log("x: ${camera.xPos} y: ${camera.yPos} r: ${camera.rotation}")
   }
 
   private fun moveForward() {

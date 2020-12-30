@@ -1,12 +1,11 @@
 fun main() {
   val renderer = Renderer(viewportWidth = 320, viewportHeight = 240, outputScale = 3)
   val textureManager = TextureManager()
-    .apply { loadTextures() }
   val camera = Camera(
     fov = 90,
-    xPos = 2.0,
-    yPos = 2.0,
-    rotation = 90.0
+    xPos = 1.2,
+    yPos = 2.5,
+    rotation = 60.0
   )
   val map = Map()
   val minimap = Minimap(map)
@@ -15,9 +14,15 @@ fun main() {
 
   val raycaster = Raycaster(stepPrecision = 32)
 
-  CameraController(camera, moveSpeed = 0.5, rotateSpeed = 5) {
+  CameraController(camera, moveSpeed = 1.0, rotateSpeed = 15) {
     paint(raycaster, context)
   }
+
+  val ui = Ui(textureManager) {
+    paint(raycaster, context)
+  }
+
+  textureManager.loadTextures(ui.getSelectedTextureSet())
 
   // Do an initial paint and wait for input
   paint(raycaster, context)

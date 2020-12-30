@@ -5,13 +5,39 @@
     <title>Kotlin Raycaster</title>
     <style>
       .texture-definition {
-        display: none
+        display: none;
+      }
+      #minimap {
+        transform: rotate(180deg);
       }
     </style>
   </head>
   <body>
-    <img id="1" src="textures/wolf/wall1.png" data-width="64" data-height="64" class="texture-definition">
-    <img id="2" src="textures/wolf/wood1.png" data-width="64" data-height="64" class="texture-definition">
+    <img data-texture-id="1" src="textures/wolf3d/wall-stone-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="2" src="textures/wolf3d/wall-stone-2.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="3" src="textures/wolf3d/wall-wood-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="4" src="textures/wolf3d/wall-wood-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="5" src="textures/wolf3d/wall-wood-2.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="7" src="textures/wolf3d/wall-blue-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="6" src="textures/wolf3d/wall-blue-2.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="8" src="textures/wolf3d/wall-blue-3.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="9" src="textures/wolf3d/wall-blue-door.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+
+    <img data-texture-id="1" src="textures/doom/wall-g-1.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="2" src="textures/doom/wall-g-2.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="3" src="textures/doom/wall-brown-1.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="5" src="textures/doom/wall-brown-2.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="4" src="textures/doom/wall-brown-3.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="6" src="textures/doom/wall-stone-1.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="7" src="textures/doom/wall-stone-2.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="8" src="textures/doom/wall-stone-3.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+    <img data-texture-id="9" src="textures/doom/door.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
+
+    <select id="texture-set">
+      <option value="wolf3d" selected>Wolfenstein 3D</option>
+      <option value="doom">Doom E1M1</option>
+    </select>
+
     <script src="kotlin-raycaster.js"></script>
   </body>
 </html>

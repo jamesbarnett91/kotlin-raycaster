@@ -10,14 +10,15 @@ class TextureManager {
   private lateinit var textures: List<Texture>
 
   fun getTexture(id: Int): Texture {
-    return textures.first { it.id == id }
+    return textures.find { it.id == id } ?: textures.first()
   }
 
-  fun loadTextures() {
+  fun loadTextures(set: String) {
     textures = document.getElementsByClassName("texture-definition").asList()
       .map { it as HTMLImageElement }
+      .filter { it.getAttribute("data-set") == set }
       .map {
-        val id = it.id.toInt()
+        val id = it.getAttribute("data-texture-id")!!.toInt()
         val width = it.getAttribute("data-width")?.toInt() ?: 64
         val height = it.getAttribute("data-height")?.toInt() ?: 64
         Texture(id, width, height, parseImage(it, width, height))
