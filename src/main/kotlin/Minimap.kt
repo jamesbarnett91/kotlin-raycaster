@@ -3,26 +3,21 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 
 class Minimap(private val map: Map) {
-  private val scale = 20
+  private val scale = 15
 
-  private val canvas = (document.createElement("canvas") as HTMLCanvasElement)
+  private val canvas = (document.getElementById("minimap") as HTMLCanvasElement)
     .apply {
       width = map.width * scale
       height = map.height * scale
-      id = "minimap"
     }
   private val context = canvas.getContext("2d") as CanvasRenderingContext2D
-
-  init {
-    document.body!!.appendChild(canvas)
-  }
 
   private fun drawMap() {
     for (y in 0 until map.height) {
       for (x in 0 until map.width) {
         val wall = map.data[y][x]
         if (wall > 0) {
-          context.fillStyle = "#000000"
+          context.fillStyle = "#202020"
           context.fillRect((x * scale).toDouble(), (y * scale).toDouble(), scale.toDouble(), scale.toDouble())
         }
       }

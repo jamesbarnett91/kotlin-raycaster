@@ -1,0 +1,45 @@
+body {
+  margin: 0.5em;
+  font-size: 15px;
+}
+
+p {
+  margin: 0 0 0.8em;
+}
+
+.texture-definition {
+  display: none;
+}
+
+#minimap {
+  transform: rotate(180deg);
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px;
+}
+
+#output-wrapper {
+  position: relative;
+  width: 960px;
+  height: 720px;
+}
+
+.controls {
+  /*max-width: 20em;*/
+}
+
+.slider {
+  margin-right: 0.5em;
+  width: 100%;
+}
+
+.form-switch {
+  font-size: 0.9em;
+}
+
+.btn {
+  height: 3em;
+  width: 23%;
+  touch-action: manipulation;
+}

@@ -1,4 +1,5 @@
 fun main() {
+  val raycastOptions = RaycastOptions(fixFisheye = false, stepPrecision = 32)
   val renderer = Renderer(viewportWidth = 320, viewportHeight = 240, outputScale = 3)
   val textureManager = TextureManager()
   val camera = Camera(
@@ -10,15 +11,15 @@ fun main() {
   val map = Map()
   val minimap = Minimap(map)
 
-  val context = RaycastContext(renderer, textureManager, camera, map, minimap)
+  val context = RaycastContext(raycastOptions, renderer, textureManager, camera, map, minimap)
 
-  val raycaster = Raycaster(stepPrecision = 32)
+  val raycaster = Raycaster()
 
   CameraController(camera, moveSpeed = 1.0, rotateSpeed = 15) {
     paint(raycaster, context)
   }
 
-  val ui = Ui(textureManager) {
+  val ui = Ui(context) {
     paint(raycaster, context)
   }
 
@@ -26,6 +27,7 @@ fun main() {
 
   // Do an initial paint and wait for input
   paint(raycaster, context)
+  ui.removeLoadingIndicator()
 }
 
 fun paint(raycaster: Raycaster, raycastContext: RaycastContext) {

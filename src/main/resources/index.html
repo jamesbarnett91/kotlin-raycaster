@@ -3,20 +3,78 @@
   <head>
     <meta charset="UTF-8">
     <title>Kotlin Raycaster</title>
-    <style>
-      .texture-definition {
-        display: none;
-      }
-      #minimap {
-        transform: rotate(180deg);
-      }
-    </style>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div class="container grid-xl">
+      <div class="columns">
+        <div class="column col-xl-12">
+          <div id="output-wrapper" class="loading loading-lg">
+            <canvas id="render-output"></canvas>
+            <canvas id="minimap"></canvas>
+          </div>
+        </div>
+        <div class="column">
+          <div class="columns controls">
+            <div class="column col-12 col-xl-3">
+              <p>A simple <a href="https://en.wikipedia.org/wiki/Ray_casting">raycasting</a> engine written from scratch in Kotlin (transpiled to JS), rendered using only vertical lines drawn on an HTML5 canvas. The source is on <a href="https://github.com/jamesbarnett91/kotlin-raycaster">GitHub</a>.</p>
+              <p>The raycasting rendering method was used in early 90's 3D games, most famously <a href="https://en.wikipedia.org/wiki/Wolfenstein_3D">Wolfenstein 3D</a>.</p>
+              <p>Use WASD to move, or the arrow buttons on mobile.</p>
+            </div>
+            <div class="column col-12 col-xl-1 hide-xl">
+              <div class="divider"></div>
+            </div>
+            <div class="divider-vert show-xl"></div>
+            <div class="column col-12 col-xl-5">
+              <div class="form-group">
+                <label class="form-label label-sm" for="texture-set">Texture set</label>
+                <select id="texture-set" class="form-select select-sm">
+                  <option value="wolf3d" selected>Wolfenstein 3D</option>
+                  <option value="doom">Doom E1M1</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label label-sm" for="fov">FOV</label>
+                <div class="input-group">
+                  <input id="fov" class="slider" type="range" min="5" max="360" value="90" step="5">
+                  <span id="fov-value" class="input-group-addon">90</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label label-sm" for="raycast-precision">Precision</label>
+                <div class="input-group">
+                  <input id="raycast-precision" class="slider" type="range" min="1" max="150" value="64" step="1">
+                  <span id="raycast-precision-value" class="input-group-addon">64</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-switch">
+                  <input id="minimap-toggle" type="checkbox" checked>
+                  <i class="form-icon"></i> Show minimap
+                </label>
+              </div>
+              <div class="form-group">
+                <label class="form-switch">
+                  <input id="fisheye-fix" type="checkbox">
+                  <i class="form-icon"></i> Fix fisheye (requires low FOV and high precision)
+                </label>
+              </div>
+              <button id="left" class="btn">←</button>
+              <button id="up" class="btn">↑</button>
+              <button id="down" class="btn">↓</button>
+              <button id="right" class="btn">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <img data-texture-id="1" src="textures/wolf3d/wall-stone-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
     <img data-texture-id="2" src="textures/wolf3d/wall-stone-2.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
     <img data-texture-id="3" src="textures/wolf3d/wall-wood-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
-    <img data-texture-id="4" src="textures/wolf3d/wall-wood-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
+    <img data-texture-id="4" src="textures/wolf3d/wall-wood-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d"> <!-- Reuse texture 3 -->
     <img data-texture-id="5" src="textures/wolf3d/wall-wood-2.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
     <img data-texture-id="7" src="textures/wolf3d/wall-blue-1.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
     <img data-texture-id="6" src="textures/wolf3d/wall-blue-2.png" data-width="64" data-height="64" class="texture-definition" data-set="wolf3d">
@@ -33,10 +91,7 @@
     <img data-texture-id="8" src="textures/doom/wall-stone-3.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
     <img data-texture-id="9" src="textures/doom/door.png" data-width="64" data-height="64" class="texture-definition" data-set="doom">
 
-    <select id="texture-set">
-      <option value="wolf3d" selected>Wolfenstein 3D</option>
-      <option value="doom">Doom E1M1</option>
-    </select>
+    <img data-texture-id="1" src="textures/blank.png" data-width="64" data-height="64" class="texture-definition" data-set="none">
 
     <script src="kotlin-raycaster.js"></script>
   </body>

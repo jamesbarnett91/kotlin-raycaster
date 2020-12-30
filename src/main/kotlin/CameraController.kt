@@ -1,4 +1,5 @@
 import kotlinx.browser.document
+import org.w3c.dom.HTMLButtonElement
 
 class CameraController(
   private val camera: Camera,
@@ -8,18 +9,20 @@ class CameraController(
 ) {
 
   init {
-    document.onkeydown = { inputHandler(it.code) }
+    document.onkeydown = { keyHandler(it.code) }
+    (document.getElementById("up") as HTMLButtonElement).onclick = { moveForward() }
+    (document.getElementById("down") as HTMLButtonElement).onclick = { moveBack() }
+    (document.getElementById("left") as HTMLButtonElement).onclick = { rotateAntiClockwise() }
+    (document.getElementById("right") as HTMLButtonElement).onclick = { rotateClockwise() }
   }
 
-  private fun inputHandler(code: String) {
+  private fun keyHandler(code: String) {
     when (code) {
       "KeyW" -> moveForward()
       "KeyS" -> moveBack()
       "KeyA" -> rotateAntiClockwise()
       "KeyD" -> rotateClockwise()
     }
-    afterInput()
-    console.log("x: ${camera.xPos} y: ${camera.yPos} r: ${camera.rotation}")
   }
 
   private fun moveForward() {
@@ -27,6 +30,7 @@ class CameraController(
     val cameraSin = camera.rotation.sine() * moveSpeed
     camera.xPos += cameraCos
     camera.yPos += cameraSin
+    afterInput()
   }
 
   private fun moveBack() {
@@ -34,14 +38,17 @@ class CameraController(
     val cameraSin = camera.rotation.sine() * moveSpeed
     camera.xPos -= cameraCos
     camera.yPos -= cameraSin
+    afterInput()
   }
 
   private fun rotateClockwise() {
     camera.rotation += rotateSpeed
+    afterInput()
   }
 
   private fun rotateAntiClockwise() {
     camera.rotation -= rotateSpeed
+    afterInput()
   }
 
 }

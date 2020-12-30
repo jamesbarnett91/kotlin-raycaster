@@ -1,11 +1,16 @@
 import kotlin.js.Date
 import kotlin.math.pow
 
-class Raycaster(private val stepPrecision: Int) {
+data class RaycastOptions(
+  var fixFisheye: Boolean,
+  var stepPrecision: Int
+)
+
+class Raycaster {
 
   fun raycast(raycastContext: RaycastContext) {
     val raycastStartMs = Date().getTime()
-    val (renderer, textureManager, camera, map, _) = raycastContext
+    val (options, renderer, textureManager, camera, map, _) = raycastContext
 
     val viewportWidth = renderer.viewportWidth
     val viewportHeight = renderer.viewportHeight
@@ -20,8 +25,8 @@ class Raycaster(private val stepPrecision: Int) {
       var objectTypeHit: Int
 
       do {
-        rayX += raySweepAngle.cosine() / stepPrecision
-        rayY += raySweepAngle.sine() / stepPrecision
+        rayX += raySweepAngle.cosine() / options.stepPrecision
+        rayY += raySweepAngle.sine() / options.stepPrecision
 
         // TODO bounds checking
         objectTypeHit = map.data[rayY.toFlooredInt()][rayX.toFlooredInt()]
@@ -31,7 +36,9 @@ class Raycaster(private val stepPrecision: Int) {
       val textureXIndex = ((texture.width * (rayX + rayY)) % texture.width).toFlooredInt()
 
       var distanceToWall = kotlin.math.sqrt((camera.xPos - rayX).pow(2) + (camera.yPos - rayY).pow(2))
-//      distanceToWall *= (raySweepAngle-camera.rotation).cosine()
+      if (options.fixFisheye) {
+        distanceToWall *= (raySweepAngle-camera.rotation).cosine()
+      }
       val wallHeight = viewportHeightHalf / distanceToWall
 
       // Ceiling

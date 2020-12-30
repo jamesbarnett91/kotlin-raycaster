@@ -4,18 +4,14 @@ import org.w3c.dom.HTMLCanvasElement
 
 class Renderer(val viewportWidth: Int, val viewportHeight: Int, private val outputScale: Int) {
 
-  private val canvas = (document.createElement("canvas") as HTMLCanvasElement)
+  private val canvas = (document.getElementById("render-output") as HTMLCanvasElement)
     .apply {
       width = viewportWidth * outputScale
       height = viewportHeight * outputScale
     }
 
-  private val context = canvas.getContext("2d") as CanvasRenderingContext2D
-
-  init {
-    context.scale(outputScale.toDouble(), outputScale.toDouble())
-    document.body!!.appendChild(canvas)
-  }
+  private val context = (canvas.getContext("2d") as CanvasRenderingContext2D)
+    .apply { scale(outputScale.toDouble(), outputScale.toDouble()) }
 
   fun drawLine(startX: Double, startY: Double, endX: Double, endY: Double, cssColour: String = "#FF0000") {
     context.strokeStyle = cssColour

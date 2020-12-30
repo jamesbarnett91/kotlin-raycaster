@@ -1,6 +1,6 @@
 data class Camera(
-  val fov: Int,
+  var fov: Int,
   var xPos: Double,
   var yPos: Double,
-  var rotation: Double
+  var rotation: Double,
 )
