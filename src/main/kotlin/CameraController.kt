@@ -5,6 +5,8 @@ class CameraController(
   private val camera: Camera,
   private val moveSpeed: Double,
   private val rotateSpeed: Int,
+  private val xMax: Int,
+  private val yMax: Int,
   private val afterInput: () -> Unit
 ) {
 
@@ -30,6 +32,7 @@ class CameraController(
     val cameraSin = camera.rotation.sine() * moveSpeed
     camera.xPos += cameraCos
     camera.yPos += cameraSin
+    boundsCheck(camera)
     afterInput()
   }
 
@@ -38,6 +41,7 @@ class CameraController(
     val cameraSin = camera.rotation.sine() * moveSpeed
     camera.xPos -= cameraCos
     camera.yPos -= cameraSin
+    boundsCheck(camera)
     afterInput()
   }
 
@@ -49,6 +53,19 @@ class CameraController(
   private fun rotateAntiClockwise() {
     camera.rotation -= rotateSpeed
     afterInput()
+  }
+
+  private fun boundsCheck(camera: Camera) {
+    camera.xPos = clamp(camera.xPos, xMax)
+    camera.yPos = clamp(camera.yPos, yMax)
+  }
+
+  private fun clamp(position: Double, max: Int): Double {
+    return when {
+      position < 1 -> 1.0
+      position > max -> max.toDouble()
+      else -> position
+    }
   }
 
 }

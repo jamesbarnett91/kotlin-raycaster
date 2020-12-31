@@ -27,8 +27,6 @@ class Raycaster {
       do {
         rayX += raySweepAngle.cosine() / options.stepPrecision
         rayY += raySweepAngle.sine() / options.stepPrecision
-
-        // TODO bounds checking
         objectTypeHit = map.data[rayY.toFlooredInt()][rayX.toFlooredInt()]
       } while (objectTypeHit == 0)
 

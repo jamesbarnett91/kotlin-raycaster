@@ -18,7 +18,13 @@ fun main() {
 
     val raycaster = Raycaster()
 
-    CameraController(camera, moveSpeed = 1.0, rotateSpeed = 15) {
+    CameraController(
+      camera,
+      moveSpeed = 1.0,
+      rotateSpeed = 15,
+      xMax = map.width - 1,
+      yMax = map.height - 1
+    ) {
       paint(raycaster, context)
     }
 
