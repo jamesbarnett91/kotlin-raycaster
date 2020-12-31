@@ -51,7 +51,7 @@ class Raycaster {
       raySweepAngle += (camera.fov / viewportWidth.toDouble())
     }
 
-    console.log("Viewport raycast in ${Date().getTime() - raycastStartMs}ms")
+    Logger.log("last frame: ${Date().getTime() - raycastStartMs} ms")
   }
 
   private fun drawWallTexture(rayIndex: Int, wallHeight: Double, textureXIndex: Int, texture: Texture, renderer: Renderer) {

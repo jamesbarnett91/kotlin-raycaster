@@ -1,43 +1,44 @@
+import kotlinx.browser.window
+
 fun main() {
-  val raycastOptions = RaycastOptions(fixFisheye = false, stepPrecision = 32)
-  val renderer = Renderer(viewportWidth = 320, viewportHeight = 240, outputScale = 3)
-  val textureManager = TextureManager()
-  val camera = Camera(
-    fov = 90,
-    xPos = 1.2,
-    yPos = 2.5,
-    rotation = 60.0
-  )
-  val map = Map()
-  val minimap = Minimap(map)
+  window.onload = {
+    val raycastOptions = RaycastOptions(fixFisheye = false, stepPrecision = 32)
+    val renderer = Renderer(viewportWidth = 320, viewportHeight = 240, outputScale = 3)
+    val textureManager = TextureManager()
+    val camera = Camera(
+      fov = 90,
+      xPos = 1.2,
+      yPos = 2.5,
+      rotation = 60.0
+    )
+    val map = Map()
+    val minimap = Minimap(map)
 
-  val context = RaycastContext(raycastOptions, renderer, textureManager, camera, map, minimap)
+    val context = RaycastContext(raycastOptions, renderer, textureManager, camera, map, minimap)
 
-  val raycaster = Raycaster()
+    val raycaster = Raycaster()
 
-  CameraController(camera, moveSpeed = 1.0, rotateSpeed = 15) {
+    CameraController(camera, moveSpeed = 1.0, rotateSpeed = 15) {
+      paint(raycaster, context)
+    }
+
+    val ui = Ui(context) {
+      paint(raycaster, context)
+    }
+
+    textureManager.loadTextures(ui.getSelectedTextureSet())
+
+    // Do an initial paint and wait for input
     paint(raycaster, context)
+    ui.removeLoadingIndicator()
   }
-
-  val ui = Ui(context) {
-    paint(raycaster, context)
-  }
-
-  textureManager.loadTextures(ui.getSelectedTextureSet())
-
-  // Do an initial paint and wait for input
-  paint(raycaster, context)
-  ui.removeLoadingIndicator()
 }
 
-fun paint(raycaster: Raycaster, raycastContext: RaycastContext) {
+private fun paint(raycaster: Raycaster, raycastContext: RaycastContext) {
   with(raycastContext) {
     renderer.clear()
     raycaster.raycast(this)
     minimap.update(camera)
+    Logger.logPosition(camera)
   }
-}
-
-fun toRadians(degrees: Double): Double {
-  return degrees * kotlin.math.PI / 180
 }

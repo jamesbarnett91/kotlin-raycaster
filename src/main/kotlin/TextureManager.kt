@@ -24,7 +24,7 @@ class TextureManager {
         Texture(id, width, height, parseImage(it, width, height))
       }
 
-    console.log("Loaded ${textures.size} texture(s)")
+    Logger.log("Loaded ${textures.size} texture(s)")
   }
 
   private fun parseImage(image: HTMLImageElement, imageWidth: Int, imageHeight: Int): List<String> {

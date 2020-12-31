@@ -10,6 +10,7 @@ class Minimap(private val map: Map) {
       width = map.width * scale
       height = map.height * scale
     }
+
   private val context = canvas.getContext("2d") as CanvasRenderingContext2D
 
   private fun drawMap() {
@@ -35,8 +36,8 @@ class Minimap(private val map: Map) {
     context.beginPath()
     context.moveTo(camera.xPos * scale, camera.yPos * scale)
 
-    val cameraCos = kotlin.math.cos(toRadians(camera.rotation))
-    val cameraSin = kotlin.math.sin(toRadians(camera.rotation))
+    val cameraCos = camera.rotation.cosine()
+    val cameraSin = camera.rotation.sine()
 
     val dirX = camera.xPos + cameraCos
     val dirY = camera.yPos + cameraSin

@@ -30,8 +30,6 @@ class Renderer(val viewportWidth: Int, val viewportHeight: Int, private val outp
     drawLine(startX.toDouble(), startY, endX.toDouble(), endY.toDouble(), cssColour)
   }
 
-  fun clear() {
-    context.clearRect(0.0, 0.0, viewportWidth.toDouble(), viewportHeight.toDouble())
-  }
+  fun clear() = context.clearRect(0.0, 0.0, viewportWidth.toDouble(), viewportHeight.toDouble())
 
 }

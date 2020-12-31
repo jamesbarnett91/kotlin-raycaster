@@ -1,8 +1,6 @@
 import kotlinx.browser.document
 import kotlinx.dom.removeClass
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.HTMLSelectElement
+import org.w3c.dom.*
 
 class Ui(private val context: RaycastContext, private val afterChange: () -> Unit) {
 
@@ -11,7 +9,7 @@ class Ui(private val context: RaycastContext, private val afterChange: () -> Uni
   init {
     registerFovInputHandler()
     registerRaycastPrecisionInputHandler()
-    registerMinimapToggleHandler()
+    registerOverlayToggleHandler()
     registerFisheyeToggleHandler()
   }
 
@@ -44,11 +42,13 @@ class Ui(private val context: RaycastContext, private val afterChange: () -> Uni
     }
   }
 
-  private fun registerMinimapToggleHandler() {
-    val toggle = document.getElementById("minimap-toggle") as HTMLInputElement
+  private fun registerOverlayToggleHandler() {
+    val toggle = document.getElementById("overlay-toggle") as HTMLInputElement
     val minimap = document.getElementById("minimap") as HTMLElement
+    val log = document.getElementById("log") as HTMLElement
     toggle.onchange = {
       minimap.hidden = !toggle.checked
+      log.hidden = !toggle.checked
       afterChange()
     }
   }
@@ -61,11 +61,7 @@ class Ui(private val context: RaycastContext, private val afterChange: () -> Uni
     }
   }
 
-  fun getSelectedTextureSet(): String {
-    return textureSelect.value
-  }
+  fun getSelectedTextureSet() = textureSelect.value
 
-  fun removeLoadingIndicator() {
-    document.getElementById("output-wrapper")?.removeClass("loading")
-  }
+  fun removeLoadingIndicator() = document.getElementById("output-wrapper")?.removeClass("loading")
 }

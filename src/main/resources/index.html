@@ -13,6 +13,10 @@
           <div id="output-wrapper" class="loading loading-lg">
             <canvas id="render-output"></canvas>
             <canvas id="minimap"></canvas>
+            <div id="log">
+              <div id="log-position"></div>
+              <div id="log-message"></div>
+            </div>
           </div>
         </div>
         <div class="column">
@@ -51,14 +55,14 @@
               </div>
               <div class="form-group">
                 <label class="form-switch">
-                  <input id="minimap-toggle" type="checkbox" checked>
-                  <i class="form-icon"></i> Show minimap
+                  <input id="overlay-toggle" type="checkbox" checked>
+                  <i class="form-icon"></i> Show minimap and overlay
                 </label>
               </div>
               <div class="form-group">
                 <label class="form-switch">
                   <input id="fisheye-fix" type="checkbox">
-                  <i class="form-icon"></i> Fix fisheye (requires low FOV and high precision)
+                  <i class="form-icon"></i> Fix fisheye (requires low FOV + high precision)
                 </label>
               </div>
               <button id="left" class="btn">←</button>
